@@ -1,0 +1,22 @@
+GET localhost:8080/surveys
+
+###
+
+POST localhost:8080/surveys
+Content-Type: application/json
+
+{
+  "id": "1",
+  "questions": [
+    {
+      "id": "1",
+      "question": "Question?",
+      "answers": [
+        {
+          "id": "1",
+          "answer": "My Answer"
+        }
+      ]
+    }
+  ]
+}
