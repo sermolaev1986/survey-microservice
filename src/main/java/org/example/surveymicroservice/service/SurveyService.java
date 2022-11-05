@@ -1,6 +1,7 @@
 package org.example.surveymicroservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.surveymicroservice.exception.SurveyAlreadyExistsException;
 import org.example.surveymicroservice.exception.SurveyNotFoundException;
 import org.example.surveymicroservice.model.Survey;
 import org.example.surveymicroservice.repository.SurveyRepository;
@@ -16,6 +17,9 @@ public class SurveyService {
     private final SurveyRepository surveyRepository;
 
     public void createSurvey(Survey survey) {
+        surveyRepository.findById(survey.getId()).ifPresent(s -> {
+            throw new SurveyAlreadyExistsException();
+        });
         surveyRepository.save((survey));
     }
 

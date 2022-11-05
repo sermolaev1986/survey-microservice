@@ -13,19 +13,19 @@ class SurveyIT extends Specification {
     int port
 
     def "survey creation flow"() {
-        when:
+        when: "try to get survey before creation"
         def response = RestAssured
                 .given()
                 .port(port)
                 .when()
                 .get('/surveys/1')
 
-        then:
+        then: "should respond with not found"
         response.then()
                 .log().all()
                 .statusCode(404)
 
-        when:
+        when: "create a survey for the first time"
         response = RestAssured
                 .given()
                 .port(port)
@@ -50,21 +50,51 @@ class SurveyIT extends Specification {
                 """)
                 .post('/surveys')
 
-        then:
+        then: "should respond with created"
         response.then()
                 .log().all()
                 .statusCode(201)
 
-        when:
+        when: "get survey after creation"
         response = RestAssured
                 .given()
                 .port(port)
                 .when()
                 .get('/surveys/1')
 
-        then:
+        then: "should return created survey"
         response.then()
                 .log().all()
                 .statusCode(200)
+
+        when: "try to create a survey with the same id"
+        response = RestAssured
+                .given()
+                .port(port)
+                .when()
+                .header('Content-Type', 'application/json')
+                .body("""
+                    {
+                      "id": "1",
+                      "questions": [
+                        {
+                          "id": "1",
+                          "question": "Question?",
+                          "answers": [
+                            {
+                              "id": "1",
+                              "answer": "My Answer"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                """)
+                .post('/surveys')
+
+        then: "should reject request"
+        response.then()
+                .log().all()
+                .statusCode(409)
     }
 }
