@@ -2,6 +2,13 @@ GET localhost:8080/surveys
 
 ###
 
+GET localhost:8080/surveys/1
+
+###
+GET localhost:8080/surveys/not-existing
+
+###
+
 POST localhost:8080/surveys
 Content-Type: application/json
 
