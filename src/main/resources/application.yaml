@@ -4,3 +4,9 @@ spring:
   redis:
     host: localhost
     port: 9999
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false

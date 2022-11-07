@@ -1,11 +1,4 @@
-GET localhost:8080/surveys
-
-###
-
 GET localhost:8080/surveys/1
-
-###
-GET localhost:8080/surveys/not-existing
 
 ###
 
@@ -13,17 +6,66 @@ POST localhost:8080/surveys
 Content-Type: application/json
 
 {
-  "id": "1",
+  "id": "2",
+  "questions": [
+    {
+      "id": "1",
+      "question": "What is your name?",
+      "answers": [
+        {
+          "id": "1",
+          "answer": "John"
+        },
+        {
+          "id": "2",
+          "answer": "Jack"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "question": "Where do you live?",
+      "answers": [
+        {
+          "id": "1",
+          "answer": "Vienna"
+        },
+        {
+          "id": "2",
+          "answer": "London"
+        }
+      ]
+    }
+  ]
+}
+
+###
+
+POST localhost:8080/surveys/2/participations
+Content-Type: application/json
+
+{
   "questions": [
     {
       "id": "1",
       "question": "Question?",
       "answers": [
         {
-          "id": "1",
+          "id": "2",
+          "answer": "My Answer"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "question": "Question?",
+      "answers": [
+        {
+          "id": "2",
           "answer": "My Answer"
         }
       ]
     }
   ]
 }
+

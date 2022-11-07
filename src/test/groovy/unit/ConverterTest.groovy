@@ -34,38 +34,25 @@ class ConverterTest extends Specification {
         def dto = surveyConverter.toDto(survey)
 
         then:
-        dto.with {
-            assert id == 'survey-id'
-            assert questions.size() == 2
-            questions[0].with {
-                assert id == 'question-1-id'
-                assert question == 'What is your name?'
-                assert answers.size() == 2
-                answers[0].with {
-                    assert id == 'answer-1-id'
-                    assert answer == 'Jack'
-                }
-                answers[1].with {
-                    assert id == 'answer-2-id'
-                    assert answer == 'John'
-                }
-            }
-            questions[1].with {
-                assert id == 'question-2-id'
-                assert question == 'Where do you live?'
-                assert answers.size() == 2
-                answers[0].with {
-                    assert id == 'answer-3-id'
-                    assert answer == 'Vienna'
-                }
-                answers[1].with {
-                    assert id == 'answer-4-id'
-                    assert answer == 'Paris'
-                }
-            }
-        }
+        dto.id == 'survey-id'
+        dto.questions.size() == 2
+        dto.questions[0].id == 'question-1-id'
+        dto.questions[0].question == 'What is your name?'
+        dto.questions[0].answers.size() == 2
+        dto.questions[0].answers[0].id == 'answer-1-id'
+        dto.questions[0].answers[0].answer == 'Jack'
+        dto.questions[0].answers[1].id == 'answer-2-id'
+        dto.questions[0].answers[1].answer == 'John'
 
-
+        dto.id == 'survey-id'
+        dto.questions.size() == 2
+        dto.questions[1].id == 'question-2-id'
+        dto.questions[1].question == 'Where do you live?'
+        dto.questions[1].answers.size() == 2
+        dto.questions[1].answers[0].id == 'answer-3-id'
+        dto.questions[1].answers[0].answer == 'Vienna'
+        dto.questions[1].answers[1].id == 'answer-4-id'
+        dto.questions[1].answers[1].answer == 'Paris'
     }
 
     def "should convert survey from dto to model"() {

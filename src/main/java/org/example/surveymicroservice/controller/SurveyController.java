@@ -7,9 +7,6 @@ import org.example.surveymicroservice.service.SurveyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping(value = "/surveys")
 @RequiredArgsConstructor
@@ -22,14 +19,6 @@ public class SurveyController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public void createSurvey(@RequestBody SurveyDto survey) {
         surveyService.createSurvey(surveyConverter.toModel(survey));
-    }
-
-    @GetMapping
-    public List<SurveyDto> getSurveys() {
-        return surveyService.getSurveys().stream()
-                .map(surveyConverter::toDto)
-                .collect(Collectors.toList());
-
     }
 
     @GetMapping("/{id}")
