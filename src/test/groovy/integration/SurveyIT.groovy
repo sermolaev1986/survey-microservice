@@ -109,4 +109,25 @@ class SurveyIT extends Specification {
                 .statusCode(409)
                 .body('message', is('Survey with id 1 already exists'))
     }
+
+    def "should reject when request is corrupted"() {
+        when: "try to post corrupted survey"
+        def response = RestAssured
+                .given()
+                .port(port)
+                .when()
+                .header('Content-Type', 'application/json')
+                .body("""
+                    {
+                      "id": "1"
+                    }
+                """)
+                .post('/surveys')
+
+        then: "should respond with created"
+        response.then()
+                .log().all()
+                .statusCode(400)
+                .body('message', is("Validation failed for object='surveyDto'. Error count: 1"))
+    }
 }

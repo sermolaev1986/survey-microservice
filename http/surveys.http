@@ -6,7 +6,7 @@ POST localhost:8080/surveys
 Content-Type: application/json
 
 {
-  "id": "2",
+  "id": "1",
   "questions": [
     {
       "id": "1",
@@ -41,7 +41,7 @@ Content-Type: application/json
 
 ###
 
-POST localhost:8080/surveys/2/participations
+POST localhost:8080/surveys/1/participations
 Content-Type: application/json
 
 {

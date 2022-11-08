@@ -141,7 +141,16 @@ class SurveyParticipationIT extends Specification {
                 .port(port)
                 .header('content-type', 'application/json')
                 .body("""{
-                
+                    "questions": [
+                        {
+                            "id": "123",
+                            "answers": [
+                                {
+                                    "id": "123"
+                                }
+                            ]
+                        }
+                    ]
                 }""")
                 .when()
                 .post('/surveys/not-existing/participations')
@@ -151,5 +160,22 @@ class SurveyParticipationIT extends Specification {
                 .log().all()
                 .statusCode(404)
                 .body('message', Matchers.is('Survey with id not-existing not found'))
+    }
+
+    def "should reject corrupted request"() {
+        when: "try to post corrupted body"
+        def response = RestAssured
+                .given()
+                .port(port)
+                .header('content-type', 'application/json')
+                .body("""{}""")
+                .when()
+                .post('/surveys/not-existing/participations')
+
+        then:
+        response.then()
+                .log().all()
+                .statusCode(400)
+                .body('message', Matchers.is("Validation failed for object='surveyParticipationDto'. Error count: 1"))
     }
 }

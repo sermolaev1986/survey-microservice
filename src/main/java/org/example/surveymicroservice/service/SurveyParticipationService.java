@@ -1,5 +1,6 @@
 package org.example.surveymicroservice.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.surveymicroservice.dto.AnswerDto;
@@ -25,7 +26,7 @@ public class SurveyParticipationService {
     private final SurveyStatisticsRepository surveyStatisticsRepository;
     private final StatisticsRedisKeyProvider statisticsRedisKeyProvider;
 
-    public void createSurveyParticipation(String surveyId, SurveyParticipationDto surveyParticipation) {
+    public void createSurveyParticipation(@NonNull String surveyId, @NonNull SurveyParticipationDto surveyParticipation) {
         log.debug("New participation for survey {}", surveyId);
         var surveyTemplate = surveyService.getSurveyById(surveyId);
         Map<String, Question> questionsPool = surveyTemplate.getQuestions().stream()
