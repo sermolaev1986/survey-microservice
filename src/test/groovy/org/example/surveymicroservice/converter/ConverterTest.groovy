@@ -1,8 +1,5 @@
-package unit
+package org.example.surveymicroservice.converter
 
-import org.example.surveymicroservice.converter.AnswerConverter
-import org.example.surveymicroservice.converter.QuestionConverter
-import org.example.surveymicroservice.converter.SurveyConverter
 import org.example.surveymicroservice.dto.AnswerDto
 import org.example.surveymicroservice.dto.QuestionDto
 import org.example.surveymicroservice.dto.SurveyDto
@@ -104,5 +101,23 @@ class ConverterTest extends Specification {
         }
 
 
+    }
+
+    //exact behaviour to be discussed whether should be tolerated or not
+    def "should tolerate null properties when converting from dto to model"() {
+        given:
+        def dto = new SurveyDto(id: null, questions: [
+                new QuestionDto(id: null, question: null, answers: [
+                        new AnswerDto(id: null, answer: null)
+                ])
+        ])
+
+        when:
+        def model = surveyConverter.toModel(dto)
+
+        then:
+        model.id == null
+        model.questions[0].id == null
+        model.questions[0].answers[0].id == null
     }
 }

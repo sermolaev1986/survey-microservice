@@ -6,6 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import spock.lang.Specification
 
+import static org.hamcrest.Matchers.hasSize
+import static org.hamcrest.Matchers.is
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = SurveyMicroserviceApplication)
 class SurveyIT extends Specification {
 
@@ -24,6 +27,7 @@ class SurveyIT extends Specification {
         response.then()
                 .log().all()
                 .statusCode(404)
+                .body('message', is('Survey with id 1 not found'))
 
         when: "create a survey for the first time"
         response = RestAssured
@@ -66,6 +70,13 @@ class SurveyIT extends Specification {
         response.then()
                 .log().all()
                 .statusCode(200)
+                .body('id', is('1'))
+                .body('questions', hasSize(1))
+                .body('questions[0].id', is('1'))
+                .body('questions[0].question', is('Question?'))
+                .body('questions[0].answers', hasSize(1))
+                .body('questions[0].answers[0].id', is('1'))
+                .body('questions[0].answers[0].answer', is('My Answer'))
 
         when: "try to create a survey with the same id"
         response = RestAssured
@@ -96,5 +107,6 @@ class SurveyIT extends Specification {
         response.then()
                 .log().all()
                 .statusCode(409)
+                .body('message', is('Survey with id 1 already exists'))
     }
 }
