@@ -1,5 +1,6 @@
 package org.example.surveymicroservice.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.surveymicroservice.exception.SurveyAlreadyExistsException;
@@ -15,7 +16,13 @@ public class SurveyService {
 
     private final SurveyRepository surveyRepository;
 
-    public void createSurvey(Survey survey) {
+    /**
+     * Creates a new survey
+     *
+     * @param survey survey to be created
+     * @throws SurveyAlreadyExistsException if survey with given id already exists
+     */
+    public void createSurvey(@NonNull Survey survey) {
         surveyRepository.findById(survey.getId()).ifPresent(s -> {
             throw new SurveyAlreadyExistsException(survey.getId());
         });
@@ -23,7 +30,13 @@ public class SurveyService {
         surveyRepository.save((survey));
     }
 
-    public Survey getSurveyById(String id) {
+    /**
+     * Gets survey by id
+     * @param id survey id
+     * @return {@link Survey}
+     * @throws SurveyNotFoundException if survey with given id has not been found
+     */
+    public Survey getSurveyById(@NonNull String id) {
         return surveyRepository.findById(id)
                 .orElseThrow(() -> new SurveyNotFoundException(id));
     }

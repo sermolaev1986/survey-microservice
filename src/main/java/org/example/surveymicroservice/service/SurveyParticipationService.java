@@ -26,8 +26,19 @@ public class SurveyParticipationService {
     private final SurveyStatisticsRepository surveyStatisticsRepository;
     private final StatisticsRedisKeyProvider statisticsRedisKeyProvider;
 
+    /**
+     * Creates a new survey participation. Current implementation saves only statistics, not original participation.
+     * This is the easiest and fastest solution, however if we don't know statistics in advance,
+     * we might as well want to save original answers as-is.
+     * Before saving statistics, questions and answers get validated against original survey template.
+     *
+     * @param surveyId            id of survey for which answers have been posted
+     * @param surveyParticipation questions and respective answers for the survey
+     * @throws InvalidSurveyParticipationException in case questions and/or answers do not match to the original survey
+     */
     public void createSurveyParticipation(@NonNull String surveyId, @NonNull SurveyParticipationDto surveyParticipation) {
         log.debug("New participation for survey {}", surveyId);
+        // If this method gets messy, we could refactor validation away from this method, however this would mean two iterations over survey.
         var surveyTemplate = surveyService.getSurveyById(surveyId);
         Map<String, Question> questionsPool = surveyTemplate.getQuestions().stream()
                 .collect(Collectors.toMap(Question::getId, Function.identity()));

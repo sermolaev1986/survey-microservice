@@ -9,6 +9,9 @@ import redis.embedded.RedisServer;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+/**
+ * Embedded redis for local use and for integration tests. Can be enabled and disabled using "local" spring profile.
+ */
 @Configuration
 @Slf4j
 @Profile("local")
